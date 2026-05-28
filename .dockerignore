@@ -1,0 +1,11 @@
+.git
+.github
+.circleci
+bin
+.tmpdeps
+coverage.out
+*.log
+.env
+docker-compose.yml
+Caddyfile
+README.md

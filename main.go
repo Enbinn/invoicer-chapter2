@@ -66,6 +66,7 @@ func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/", iv.getIndex).Methods("GET")
 	r.HandleFunc("/__heartbeat__", getHeartbeat).Methods("GET")
+	r.HandleFunc("/login", loginHandler).Methods("POST")
 	r.HandleFunc("/invoice/{id:[0-9]+}", iv.getInvoice).Methods("GET")
 	r.HandleFunc("/invoice", iv.postInvoice).Methods("POST")
 	r.HandleFunc("/invoice/{id:[0-9]+}", iv.putInvoice).Methods("PUT")

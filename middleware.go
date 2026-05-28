@@ -38,15 +38,16 @@ func logRequest() Middleware {
 func setResponseHeaders() Middleware {
 	return func(h http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			/* These will be set in chapter 3
-			 *
-			w.Header().Add("Content-Security-Policy", "default-src 'self'; child-src 'self;")
-			w.Header().Add("X-XSS-Protection", "1; mode=block")
-			w.Header().Add("X-Frame-Options", "SAMEORIGIN")
-			w.Header().Add("X-Content-Type-Options", "nosniff")
-			w.Header().Add("Strict-Transport-Security", "max-age=31536000;")
-			w.Header().Add("Public-Key-Pins", `max-age=1296000; pin-sha256="YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg="; pin-sha256="++MBgDH5WGvL9Bcn5Be30cRcL0f5O+NyoXuWtQdX1aI="`)
-			*/
+			// Защита от кликджекинга
+			w.Header().Set("X-Frame-Options", "DENY")
+			w.Header().Set("Content-Security-Policy", "frame-ancestors 'none'; default-src 'self'")
+
+			// Дополнительные меры защиты
+			w.Header().Set("X-Content-Type-Options", "nosniff")
+			w.Header().Set("Referrer-Policy", "no-referrer")
+			w.Header().Set("Permissions-Policy", "geolocation=(), microphone=(), camera=()")
+			w.Header().Set("Cache-Control", "no-store")
+
 			h.ServeHTTP(w, r)
 		})
 	}
